@@ -19,8 +19,11 @@ main{max-width:1180px;margin:0 auto;padding:14px 16px 80px}.intro{color:var(--mu
 .v .b{padding:8px 10px;font-size:13px}.tag{display:inline-block;border-radius:6px;padding:1px 7px;font-size:11.5px;font-weight:700;color:#fff;margin-right:5px}
 .tag.vizualizace{background:var(--viz)}.tag.uprava{background:var(--upr)}.v select{font:inherit;font-size:12.5px;margin-top:5px;padding:3px 6px;border-radius:6px;border:1px solid var(--line);background:var(--card);color:var(--fg)}
 details{margin:6px 0}summary{cursor:pointer;color:var(--gold);font-weight:600;font-size:14px}
-.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:6px;margin-top:8px}.g{position:relative;cursor:pointer;border-radius:6px;overflow:hidden;border:3px solid transparent}
-.g img{width:100%;height:78px;object-fit:cover;display:block}.g.sel{border-color:var(--gold)}.g span{position:absolute;left:3px;top:3px;background:#000a;color:#ffd75a;font-size:11px;font-weight:700;padding:0 4px;border-radius:3px}
+.galh{margin:10px 0 0;font-weight:600;font-size:14px;color:var(--gold)}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;margin-top:6px}.g{position:relative;cursor:pointer;border-radius:6px;overflow:hidden;border:3px solid transparent}
+.g img{width:100%;height:100px;object-fit:cover;display:block}.g.sel{border-color:var(--gold)}
+.g.sel::after{content:'✓ vybráno';position:absolute;right:3px;bottom:3px;background:var(--gold);color:#fff;font-size:11px;font-weight:700;padding:0 5px;border-radius:3px}
+@media (max-width:640px){.gal{grid-template-columns:repeat(3,1fr)}.g img{height:74px}}.g span{position:absolute;left:3px;top:3px;background:#000a;color:#ffd75a;font-size:11px;font-weight:700;padding:0 4px;border-radius:3px}
 .act{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start;margin-top:10px}.btn{border:1px solid var(--line);background:var(--card);color:var(--fg);border-radius:8px;padding:7px 12px;font:600 13.5px inherit;cursor:pointer}
 .btn.ok.on{background:var(--ok);color:#fff;border-color:var(--ok)}.btn.zmenit.on{background:var(--chg);color:#fff;border-color:var(--chg)}.btn.ne.on{background:var(--no);color:#fff;border-color:var(--no)}
 textarea{flex:1 1 320px;min-height:42px;border:1px solid var(--line);border-radius:8px;padding:7px 9px;font:inherit;font-size:14px;background:var(--card);color:var(--fg)}
@@ -44,7 +47,9 @@ a{color:var(--gold)}
 <main><div class="navod"><h2>Co máš udělat (cca 2 minuty na kartu)</h2>
 Majitelům, kteří prodávají sami, pošleme e-mailem ukázku: 2 jejich fotky z inzerátu vylepšené námi.
 U každé karty zkontroluj náš návrh:<ol>
-<li><b>Jsou to ty 2 nejlepší fotky na „před / po“?</b> Hlavní místnost nebo dům zvenku, ne koupelna ani detail. Jinou fotku vybereš kliknutím ve „Všechny fotky z inzerátu“.</li>
+<li><b>Jsou to ty 2 nejlepší fotky na „před / po“?</b> Hlavní místnost nebo dům zvenku, ne koupelna ani detail.
+<b>Ty 2 fotky vybírala AI, klidně vyber jiné.</b> Pod každou kartou jsou všechny fotky z inzerátu: klikem fotku přidáš,
+klikem na vybranou (zlatý rámeček) ji odebereš.</li>
 <li><b>Sedí, co s fotkou uděláme?</b> <span class="tag uprava">ÚPRAVA</span> = jen srovnat a vyčistit fotku, nic nepřibude.
 <span class="tag vizualizace">VIZUALIZACE</span> = nové zařízení nebo renovace ve stylu domu (chata chatařsky, vila luxusně). Přepneš to pod fotkou.</li>
 <li><b>Klikni</b> ✅ OK, ✏️ Změnit, když jsi něco upravil nebo chceš jinak (napiš proč), nebo ❌ Vynechat, když se nemovitost nehodí
@@ -84,7 +89,7 @@ function card(d){var r=rec(d.kod),s=r.stav;var photo=function(i){return (d.fotky
     '<div class="hod">'+esc(d.hodnoceni||'')+'</div><div class="vyb">'+vyb+(d.orto?'<div class="v"><a href="'+esc(d.orto)+'" target="_blank" rel="noopener"><img loading="lazy" src="'+esc(d.orto)+'"></a><div class="b">'+
       '<span class="tag" style="background:#6b7d5a">POHLED SHORA</span> ortofoto © ČÚZK kolem GPS z inzerátu'+(d.gps&&d.gps[2]!=='address'?' (poloha jen přibližná – ulice)':'')+
       '<div class="mut">Výchozí podklad pro zákres hranic / 3D pohled z Google Earth – zatím jen náhled, nic se s ním nedělá.</div></div></div>':'')+'</div>'+
-    '<details><summary>Všechny fotky z inzerátu ('+d.fotky.length+') – klikem změníš výběr</summary><div class="gal">'+gal+'</div></details>'+
+    '<div class="galh">Všechny fotky z inzerátu ('+d.fotky.length+'): klik = přidat do výběru, klik na vybranou = odebrat</div><div class="gal">'+gal+'</div>'+
     '<div class="act"><button class="btn ok'+(s==='ok'?' on':'')+'" data-k="'+d.kod+'" data-s="ok">✅ OK</button>'+
     '<button class="btn zmenit'+(s==='zmenit'?' on':'')+'" data-k="'+d.kod+'" data-s="zmenit">✏️ Změnit</button>'+
     '<button class="btn ne'+(s==='ne'?' on':'')+'" data-k="'+d.kod+'" data-s="ne">❌ Vynechat</button>'+
@@ -101,7 +106,7 @@ function merge(sv){for(var k in sv){if(k.indexOf('__')===0)continue;var a=S[k],b
 document.addEventListener('click',function(e){var b=e.target.closest('.btn');if(b){var r=rec(b.dataset.k);r.stav=(r.stav===b.dataset.s?'':b.dataset.s);touch(b.dataset.k);render();return;}
   var g=e.target.closest('.g');if(g){var r=rec(g.dataset.k),i=+g.dataset.i,pos=r.vyber.findIndex(function(v){return v.idx===i;});
     if(pos>=0)r.vyber.splice(pos,1);else{if(r.vyber.length>=3)return;r.vyber.push({idx:i,akce:'vizualizace'});}
-    if(!r.stav)r.stav='zmenit';touch(g.dataset.k);render();var d=document.querySelector('#'+g.dataset.k+' details');if(d)d.open=true;}});
+    if(!r.stav)r.stav='zmenit';touch(g.dataset.k);render();}});
 document.addEventListener('change',function(e){if(e.target.classList.contains('akce')){var r=rec(e.target.dataset.k);
   r.vyber.forEach(function(v){if(v.idx===+e.target.dataset.i)v.akce=e.target.value;});if(!r.stav)r.stav='zmenit';touch(e.target.dataset.k);render();}});
 document.addEventListener('input',function(e){if(e.target.tagName==='TEXTAREA'){var r=rec(e.target.dataset.k);r.pozn=e.target.value;r.ts=Date.now();push();}});
